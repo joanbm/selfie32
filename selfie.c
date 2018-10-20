@@ -1549,8 +1549,6 @@ uint32_t EXITCODE_SYMBOLICEXECUTIONERROR = 12;
 uint32_t EXITCODE_OUTOFTRACEMEMORY       = 13;
 uint32_t EXITCODE_UNCAUGHTEXCEPTION      = 14;
 
-uint32_t SYSCALL_BITWIDTH = 32; // integer bit width for system calls
-
 uint32_t MIPSTER = 1;
 uint32_t DIPSTER = 2;
 uint32_t RIPSTER = 3;
@@ -4775,7 +4773,7 @@ void selfie_compile() {
 
       // assert: source_name is mapped and not longer than MAX_FILENAME_LENGTH
 
-      source_fd = sign_extend(open(source_name, O_RDONLY, 0), SYSCALL_BITWIDTH);
+      source_fd = open(source_name, O_RDONLY, 0);
 
       if (signed_less_than(source_fd, 0)) {
         printf2((uint32_t*) "%s: could not open input file %s\n", selfie_name, source_name);
@@ -5510,15 +5508,15 @@ uint32_t open_write_only(uint32_t* name) {
   uint32_t fd;
 
   // try Mac flags
-  fd = sign_extend(open(name, MAC_O_CREAT_TRUNC_WRONLY, S_IRUSR_IWUSR_IRGRP_IROTH), SYSCALL_BITWIDTH);
+  fd = open(name, MAC_O_CREAT_TRUNC_WRONLY, S_IRUSR_IWUSR_IRGRP_IROTH);
 
   if (signed_less_than(fd, 0)) {
     // try Linux flags
-    fd = sign_extend(open(name, LINUX_O_CREAT_TRUNC_WRONLY, S_IRUSR_IWUSR_IRGRP_IROTH), SYSCALL_BITWIDTH);
+    fd = open(name, LINUX_O_CREAT_TRUNC_WRONLY, S_IRUSR_IWUSR_IRGRP_IROTH);
 
     if (signed_less_than(fd, 0))
       // try Windows flags
-      fd = sign_extend(open(name, WINDOWS_O_BINARY_CREAT_TRUNC_WRONLY, S_IRUSR_IWUSR_IRGRP_IROTH), SYSCALL_BITWIDTH);
+      fd = open(name, WINDOWS_O_BINARY_CREAT_TRUNC_WRONLY, S_IRUSR_IWUSR_IRGRP_IROTH);
   }
 
   return fd;
@@ -5620,7 +5618,7 @@ void selfie_load() {
 
   // assert: binary_name is mapped and not longer than MAX_FILENAME_LENGTH
 
-  fd = sign_extend(open(binary_name, O_RDONLY, 0), SYSCALL_BITWIDTH);
+  fd = open(binary_name, O_RDONLY, 0);
 
   if (signed_less_than(fd, 0)) {
     printf2((uint32_t*) "%s: could not open input file %s\n", selfie_name, binary_name);
@@ -5654,7 +5652,7 @@ void selfie_load() {
 
         if (binary_length <= MAX_BINARY_LENGTH) {
           // now read binary including global variables and strings
-          number_of_read_bytes = sign_extend(read(fd, binary, binary_length), SYSCALL_BITWIDTH);
+          number_of_read_bytes = read(fd, binary, binary_length);
 
           if (signed_less_than(0, number_of_read_bytes)) {
             // check if we are really at EOF
@@ -5707,7 +5705,7 @@ void implement_exit(uint32_t* context) {
     print((uint32_t*) " |- ->\n");
   }
 
-  set_exit_code(context, sign_shrink(*(get_regs(context) + REG_A0), SYSCALL_BITWIDTH));
+  set_exit_code(context, *(get_regs(context) + REG_A0));
 
   if (symbolic)
     return;
@@ -5716,7 +5714,7 @@ void implement_exit(uint32_t* context) {
     "%s: %s exiting with exit code %d and %.2dMB mallocated memory\n",
     selfie_name,
     get_name(context),
-    (uint32_t*) sign_extend(get_exit_code(context), SYSCALL_BITWIDTH),
+    (uint32_t*) get_exit_code(context),
     (uint32_t*) fixed_point_ratio(get_program_break(context) - get_original_break(context), MEGABYTE, 2));
 }
 
@@ -5809,7 +5807,7 @@ void implement_read(uint32_t* context) {
               // to preserve the original read semantics
               store_physical_memory(buffer, *(values + load_symbolic_memory(get_pt(context), vbuffer)));
 
-              actually_read = sign_extend(read(fd, buffer, bytes_to_read), SYSCALL_BITWIDTH);
+              actually_read = read(fd, buffer, bytes_to_read);
 
               // retrieve read value
               value = load_physical_memory(buffer);
@@ -5833,7 +5831,7 @@ void implement_read(uint32_t* context) {
             throw_exception(EXCEPTION_MAXTRACE, 0);
           }
         } else
-          actually_read = sign_extend(read(fd, buffer, bytes_to_read), SYSCALL_BITWIDTH);
+          actually_read = read(fd, buffer, bytes_to_read);
 
         if (actually_read == bytes_to_read) {
           read_total = read_total + actually_read;
@@ -5869,7 +5867,7 @@ void implement_read(uint32_t* context) {
   if (failed == 0)
     *(get_regs(context) + REG_A0) = read_total;
   else
-    *(get_regs(context) + REG_A0) = sign_shrink(-1, SYSCALL_BITWIDTH);
+    *(get_regs(context) + REG_A0) = -1;
 
   if (symbolic) {
     *(reg_typ + REG_A0) = 0;
@@ -5956,10 +5954,10 @@ void implement_write(uint32_t* context) {
         if (symbolic)
           // TODO: What should symbolically executed code output?
           // buffer points to a trace counter that refers to the actual value
-          // actually_written = sign_extend(write(fd, values + load_physical_memory(buffer), bytes_to_write), SYSCALL_BITWIDTH);
+          // actually_written = write(fd, values + load_physical_memory(buffer), bytes_to_write);
           actually_written = bytes_to_write;
         else
-          actually_written = sign_extend(write(fd, buffer, bytes_to_write), SYSCALL_BITWIDTH);
+          actually_written = write(fd, buffer, bytes_to_write);
 
         if (actually_written == bytes_to_write) {
           written_total = written_total + actually_written;
@@ -5995,7 +5993,7 @@ void implement_write(uint32_t* context) {
   if (failed == 0)
     *(get_regs(context) + REG_A0) = written_total;
   else
-    *(get_regs(context) + REG_A0) = sign_shrink(-1, SYSCALL_BITWIDTH);
+    *(get_regs(context) + REG_A0) = -1;
 
   if (symbolic) {
     *(reg_typ + REG_A0) = 0;
@@ -6109,14 +6107,14 @@ void implement_open(uint32_t* context) {
   mode      = *(get_regs(context) + REG_A2);
 
   if (down_load_string(get_pt(context), vfilename, filename_buffer)) {
-    fd = sign_extend(open(filename_buffer, flags, mode), SYSCALL_BITWIDTH);
+    fd = open(filename_buffer, flags, mode);
 
     *(get_regs(context) + REG_A0) = fd;
 
     if (debug_open)
       printf5((uint32_t*) "%s: opened file %s with flags %x and mode %o returning file descriptor %d\n", selfie_name, filename_buffer, (uint32_t*) flags, (uint32_t*) mode, (uint32_t*) fd);
   } else {
-    *(get_regs(context) + REG_A0) = sign_shrink(-1, SYSCALL_BITWIDTH);
+    *(get_regs(context) + REG_A0) = -1;
 
     if (debug_open)
       printf2((uint32_t*) "%s: opening file with name at virtual address %p failed because the name is too long\n", selfie_name, (uint32_t*) vfilename);
@@ -9397,7 +9395,7 @@ void backtrack_trace(uint32_t* context) {
   uint32_t savepc;
 
   if (debug_symbolic)
-    printf3((uint32_t*) "%s: backtracking %s from exit code %d\n", selfie_name, get_name(context), (uint32_t*) sign_extend(get_exit_code(context), SYSCALL_BITWIDTH));
+    printf3((uint32_t*) "%s: backtracking %s from exit code %d\n", selfie_name, get_name(context), (uint32_t*) get_exit_code(context));
 
   symbolic = 0;
 
@@ -9564,7 +9562,7 @@ uint32_t selfie_run(uint32_t machine) {
 
   execute = 0;
 
-  printf3((uint32_t*) "%s: selfie terminating %s with exit code %d\n", selfie_name, get_name(current_context), (uint32_t*) sign_extend(exit_code, SYSCALL_BITWIDTH));
+  printf3((uint32_t*) "%s: selfie terminating %s with exit code %d\n", selfie_name, get_name(current_context), (uint32_t*) exit_code);
 
   print_profile();
 
@@ -9834,7 +9832,7 @@ void selfie_load_dimacs() {
 
   // assert: source_name is mapped and not longer than MAX_FILENAME_LENGTH
 
-  source_fd = sign_extend(open(source_name, O_RDONLY, 0), SYSCALL_BITWIDTH);
+  source_fd = open(source_name, O_RDONLY, 0);
 
   if (signed_less_than(source_fd, 0)) {
     printf2((uint32_t*) "%s: could not open input file %s\n", selfie_name, source_name);
