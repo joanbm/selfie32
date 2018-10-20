@@ -3740,15 +3740,15 @@ uint32_t compile_simple_expression() {
       if (ltype == UINT32STAR_T) {
         if (rtype == UINT32_T)
           // UINT32STAR_T + UINT32_T
-          // pointer arithmetic: factor of 2^3 of integer operand
-          emit_left_shift_by(current_temporary(), 3);
+          // pointer arithmetic: factor of 2^2 of integer operand
+          emit_left_shift_by(current_temporary(), 2);
         else
           // UINT32STAR_T + UINT32STAR_T
           syntax_error_message((uint32_t*) "(uint32_t*) + (uint32_t*) is undefined");
       } else if (rtype == UINT32STAR_T) {
         // UINT32_T + UINT32STAR_T
-        // pointer arithmetic: factor of 2^3 of integer operand
-        emit_left_shift_by(previous_temporary(), 3);
+        // pointer arithmetic: factor of 2^2 of integer operand
+        emit_left_shift_by(previous_temporary(), 2);
 
         ltype = UINT32STAR_T;
       }
@@ -3759,8 +3759,8 @@ uint32_t compile_simple_expression() {
       if (ltype == UINT32STAR_T) {
         if (rtype == UINT32_T) {
           // UINT32STAR_T - UINT32_T
-          // pointer arithmetic: factor of 2^3 of integer operand
-          emit_left_shift_by(current_temporary(), 3);
+          // pointer arithmetic: factor of 2^2 of integer operand
+          emit_left_shift_by(current_temporary(), 2);
           emit_sub(previous_temporary(), previous_temporary(), current_temporary());
         } else {
           // UINT32STAR_T - UINT32STAR_T
