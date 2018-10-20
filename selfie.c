@@ -108,8 +108,6 @@ uint32_t left_shift(uint32_t n, uint32_t b);
 uint32_t right_shift(uint32_t n, uint32_t b);
 
 uint32_t get_bits(uint32_t n, uint32_t i, uint32_t b);
-uint32_t get_low_word(uint32_t n);
-uint32_t get_high_word(uint32_t n);
 
 uint32_t abs(uint32_t n);
 
@@ -1699,14 +1697,6 @@ uint32_t get_bits(uint32_t n, uint32_t i, uint32_t b) {
     // to reset all bits to the left of them, then
     // shift to-be-loaded bits all the way to the right and return
     return right_shift(left_shift(n, CPUBITWIDTH - (i + b)), CPUBITWIDTH - b);
-}
-
-uint32_t get_low_word(uint32_t n) {
-  return get_bits(n, 0, WORDSIZEINBITS);
-}
-
-uint32_t get_high_word(uint32_t n) {
-  return get_bits(n, WORDSIZEINBITS, WORDSIZEINBITS);
 }
 
 uint32_t abs(uint32_t n) {
@@ -5235,31 +5225,17 @@ void print_instruction_counters() {
 }
 
 uint32_t load_instruction(uint32_t baddr) {
-  if (baddr % REGISTERSIZE == 0)
-    return get_low_word(*(binary + baddr / REGISTERSIZE));
-  else
-    return get_high_word(*(binary + baddr / REGISTERSIZE));
+  return *(binary + baddr / REGISTERSIZE);
 }
 
 void store_instruction(uint32_t baddr, uint32_t instruction) {
-  uint32_t temp;
-
   if (baddr >= MAX_BINARY_LENGTH) {
     syntax_error_message((uint32_t*) "maximum binary length exceeded");
 
     exit(EXITCODE_COMPILERERROR);
   }
 
-  temp = *(binary + baddr / REGISTERSIZE);
-
-  if (baddr % REGISTERSIZE == 0)
-    // replace low word
-    temp = left_shift(get_high_word(temp), WORDSIZEINBITS) + instruction;
-  else
-    // replace high word
-    temp = left_shift(instruction, WORDSIZEINBITS) + get_low_word(temp);
-
-  *(binary + baddr / REGISTERSIZE) = temp;
+  *(binary + baddr / REGISTERSIZE) = instruction;
 }
 
 uint32_t load_data(uint32_t baddr) {
@@ -8132,10 +8108,7 @@ void fetch() {
   // assert: is_valid_virtual_address(pc) == 1
   // assert: is_virtual_address_mapped(pt, pc) == 1
 
-  if (pc % REGISTERSIZE == 0)
-    ir = get_low_word(load_virtual_memory(pt, pc));
-  else
-    ir = get_high_word(load_virtual_memory(pt, pc - INSTRUCTIONSIZE));
+  ir = load_virtual_memory(pt, pc);
 }
 
 void decode_execute() {
