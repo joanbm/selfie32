@@ -866,7 +866,7 @@ void selfie_load();
 
 uint32_t MAX_BINARY_LENGTH = 262144; // 256KB
 
-uint32_t ELF_HEADER_LEN = 120; // = 64 + 56 bytes (file + program header)
+uint32_t ELF_HEADER_LEN = 84; // = 52 + 32 bytes (file + program header)
 
 // according to RISC-V pk
 uint32_t ELF_ENTRY_POINT = 65536; // = 0x10000 (address of beginning of code)
@@ -5439,30 +5439,33 @@ uint32_t* create_elf_header(uint32_t binary_length) {
   *(header + 0) = 127                               // magic number part 0 is 0x7F
                 + left_shift((uint32_t) 'E', 8)     // magic number part 1
                 + left_shift((uint32_t) 'L', 16)    // magic number part 2
-                + left_shift((uint32_t) 'F', 24)    // magic number part 3
-                + left_shift(2, 32)                 // file class is ELFCLASS32
-                + left_shift(1, 40)                 // object file data structures endianess is ELFDATA2LSB
-                + left_shift(1, 48);                // version of the object file format
-  *(header + 1) = 0;                                // ABI version and start of padding bytes
-  *(header + 2) = 2                                 // object file type is ET_EXEC
-                + left_shift(243, 16)               // target architecture is RV32
-                + left_shift(1, 32);                // version of the object file format
-  *(header + 3) = ELF_ENTRY_POINT;                  // entry point address
-  *(header + 4) = 8 * SIZEOFUINT32;                 // program header offset
-  *(header + 5) = 0;                                // section header offset
-  *(header + 6) = left_shift(8 * SIZEOFUINT32, 32)  // elf header size
-                + left_shift(7 * SIZEOFUINT32, 48); // size of program header entry
-  *(header + 7) = 1;                                // number of program header entries
+                + left_shift((uint32_t) 'F', 24);   // magic number part 3
+  *(header + 1) = left_shift(2, 0)                  // file class is ELFCLASS32
+                + left_shift(1, 8)                  // object file data structures endianess is ELFDATA2LSB
+                + left_shift(1, 16);                // version of the object file format
+  *(header + 2) = 0;                                // ABI version and start of padding bytes
+  *(header + 3) = 0;                                // more padding bytes
+  *(header + 4) = 2                                 // object file type is ET_EXEC
+                + left_shift(243, 16);              // target architecture is RV32
+  *(header + 5) = 1;                                // version of the object file format
+  *(header + 6) = ELF_ENTRY_POINT;                  // entry point address
+  *(header + 7) = 13 * SIZEOFUINT32;                // program header offset
+  *(header + 8) = 0;                                // section header offset
+  *(header + 9) = 0;                                // flags
+  *(header + 10) = left_shift(13 * SIZEOFUINT32, 0) // elf header size
+                + left_shift(8 * SIZEOFUINT32, 16); // size of program header entry
+  *(header + 11) = 1;                               // number of program header entries
+  *(header + 12) = 0;                               // number of section header entries
 
   // RISC-U ELF32 program header table:
-  *(header + 8)  = 1                              // type of segment is LOAD
-                 + left_shift(7, 32);             // segment attributes is RWX
-  *(header + 9)  = ELF_HEADER_LEN + SIZEOFUINT32; // segment offset in file
-  *(header + 10) = ELF_ENTRY_POINT;               // virtual address in memory
-  *(header + 11) = 0;                             // physical address (reserved)
-  *(header + 12) = binary_length;                 // size of segment in file
-  *(header + 13) = binary_length;                 // size of segment in memory
-  *(header + 14) = PAGESIZE;                      // alignment of segment
+  *(header + 13) = 1;                             // type of segment is LOAD
+  *(header + 14) = ELF_HEADER_LEN + SIZEOFUINT32; // segment offset in file
+  *(header + 15) = ELF_ENTRY_POINT;               // virtual address in memory
+  *(header + 16) = 0;                             // physical address (reserved)
+  *(header + 17) = binary_length;                 // size of segment in file
+  *(header + 18) = binary_length;                 // size of segment in memory
+  *(header + 19) = 7;                             // segment attributes is RWX
+  *(header + 20) = PAGESIZE;                      // alignment of segment
 
   return header;
 }
@@ -5473,10 +5476,10 @@ uint32_t validate_elf_header(uint32_t* header) {
   uint32_t  position;
   uint32_t* valid_header;
 
-  new_entry_point   = *(header + 10);
-  new_binary_length = *(header + 12);
+  new_entry_point   = *(header + 15);
+  new_binary_length = *(header + 17);
 
-  if (new_binary_length != *(header + 13))
+  if (new_binary_length != *(header + 18))
     // segment size in file is not the same as segment size in memory
     return 0;
 
