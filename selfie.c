@@ -5440,7 +5440,7 @@ uint32_t* create_elf_header(uint32_t binary_length) {
                 + left_shift((uint32_t) 'E', 8)     // magic number part 1
                 + left_shift((uint32_t) 'L', 16)    // magic number part 2
                 + left_shift((uint32_t) 'F', 24);   // magic number part 3
-  *(header + 1) = left_shift(2, 0)                  // file class is ELFCLASS32
+  *(header + 1) = left_shift(1, 0)                  // file class is ELFCLASS32
                 + left_shift(1, 8)                  // object file data structures endianess is ELFDATA2LSB
                 + left_shift(1, 16);                // version of the object file format
   *(header + 2) = 0;                                // ABI version and start of padding bytes
