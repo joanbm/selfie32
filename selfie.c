@@ -192,8 +192,8 @@ uint32_t CHAR_BACKSLASH    =  92; // ASCII code 92 = backslash
 
 uint32_t CPUBITWIDTH = 32;
 
-uint32_t SIZEOFUINT32     = 8; // must be the same as REGISTERSIZE
-uint32_t SIZEOFUINT32STAR = 8; // must be the same as REGISTERSIZE
+uint32_t SIZEOFUINT32     = 4; // must be the same as REGISTERSIZE
+uint32_t SIZEOFUINT32STAR = 4; // must be the same as REGISTERSIZE
 
 uint32_t* power_of_two_table;
 
@@ -1719,7 +1719,7 @@ uint32_t abs(uint32_t n) {
 uint32_t signed_less_than(uint32_t a, uint32_t b) {
   // INT32_MIN <= n <= INT32_MAX iff
   // INT32_MIN + INT32_MIN <= n + INT32_MIN <= INT32_MAX + INT32_MIN iff
-  // -2^32 <= n + INT32_MIN <= 2^32 - 1 (sign-extended to 65 bits) iff
+  // -2^32 <= n + INT32_MIN <= 2^32 - 1 (sign-extended to 33 bits) iff
   // 0 <= n + INT32_MIN <= UINT32_MAX
   return a + INT32_MIN < b + INT32_MIN;
 }
