@@ -1,3 +1,29 @@
+# Selfie32
+
+Selfie32 is a port of the [Selfie](https://github.com/cksystemsteaching/selfie) project to 32-bit RISC.
+
+## What works (DONE)
+
+* Adapted source code and Makefiles for 32-bit build
+* Parsing of C* code
+* Generation of assembly files
+* Generation of 32-bit ELF header for Risc-V 32
+* Debugger
+* SAT solver
+* Selfie on mipster (self-test)
+* Selfie on hypster (self-test)
+
+## What doesn't work or isn't tested (TODO)
+
+* Various options such as monster, mibster, mobster, etc.: Not tested
+* Test on a RISCV32 emulation: Not tested. Most-likely it will not work because the instruction format has not been changed at all
+
+## What will not be done, unless it is contributed (WONTFIX)
+
+* Adapt Dockerfiles for 32-bit
+* Adapting all the documentation for 32-bit
+
+
 # Selfie [![Build Status](https://travis-ci.org/cksystemsteaching/selfie.svg?branch=master)](https://travis-ci.org/cksystemsteaching/selfie)
 
 Selfie is a project of the [Computational Systems Group](http://www.cs.uni-salzburg.at/~ck) at the Department of Computer Sciences of the University of Salzburg in Austria.
