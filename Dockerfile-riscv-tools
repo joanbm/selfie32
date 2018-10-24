@@ -43,16 +43,16 @@ RUN git clone https://github.com/riscv/riscv-tools.git \
 # build everything with gcc
 RUN mkdir -p $RISCV \
   && cd riscv-tools \
-  && CC=gcc CXX=g++ ./build.sh
+  && CC=gcc CXX=g++ ./build-rv32ima.sh
 
 # test the RISC-V gnu toolchain
 RUN echo '#include <stdio.h>\n int main(void) { printf("Hello world!\\n"); return 0; }' > hello.c \
-  && riscv64-unknown-elf-gcc -o hello hello.c \
+  && riscv32-unknown-elf-gcc -o hello hello.c \
   && spike pk hello
 
 # remove RISC-V gnu toolchain to shrink image size
  RUN rm -rf \
-    riscv/bin/riscv64-* \
+    riscv/bin/riscv32-* \
     riscv/bin/openocd \
     riscv/lib/gcc \
     riscv/libexec \

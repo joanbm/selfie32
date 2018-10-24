@@ -1,9 +1,9 @@
 # import image where spike is already installed
-FROM cksystemsteaching/riscv-tools
+FROM riscv32-tools
 
 # install git
 RUN apt-get update && apt-get install -y \
-    git \
+    git gcc-multilib \
   && rm -rf /var/lib/apt/lists/*
 
 # add selfie sources to the image
