@@ -66,11 +66,11 @@ spike: selfie
 	diff -q selfie.m selfie7.m
 	diff -q selfie.s selfie7.s
 
-# Build and update riscv-tools Docker image
+# Build and update riscv32-tools Docker image
 riscv-tools:
-	docker build -f Dockerfile-riscv-tools -t cksystemsteaching/selfie .
-	docker login -u cksystemsteaching
-	docker push cksystemsteaching/riscv-tools
+	docker build -f Dockerfile-riscv-tools -t joanbm/riscv32-tools .
+	docker login -u joanbm
+	docker push joanbm/riscv32-tools
 
 # Run everything
 all: compile quine debug replay os vm min mob sat

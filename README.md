@@ -12,17 +12,32 @@ Selfie32 is a port of the [Selfie](https://github.com/cksystemsteaching/selfie) 
 * SAT solver
 * Selfie on mipster (self-test)
 * Selfie on hypster (self-test)
+* Adapt Dockerfiles for 32-bit environment
+* Build & publish pre-built image of the RISCV32 simulator to Docker Hub
+* Successful Execution of selfie on the Spike RISCV32 emulator
 
 ## What doesn't work or isn't tested (TODO)
 
 * Various options such as monster, mibster, mobster, etc.: Not tested
-* Test on a RISCV32 emulation: Not tested. Most-likely it will not work because the instruction format has not been changed at all
+* Automated builds (.travis.yml): Not done
+* Adapting the examples from `./manuscript/code`: Not done
 
 ## What will not be done, unless it is contributed (WONTFIX)
 
-* Adapt Dockerfiles for 32-bit
-* Adapting all the documentation for 32-bit
+* Adapting all the documentation for 32-bit: Too much mantainance work for too little value, since the only changes in this port are dropping everything from 64 bits to 32 bits.
+* Differing from the original Selfie project, except in what regards to the 64 bit to 32 bits port: This includes adding new features, fixing bugs, etc.. Only the changes in the master branch of the original Selfie repository will be merged.
 
+## Selfie32 quickstart with Docker
+
+Since your compiler may not have everything required for Selfie32 (e.g. a 32-bit compiler toolchain), or everything you might want for testing (e.g. Spike ISA simulator) I recommend using the Docker container.
+
+``
+docker build . -t selfie32         # Build the container with the 32-bit compiler and RISCV32 toolset
+docker run -it selfie32            # Launch an interactive session in the container
+make clean && make                 # (Re-)Compile selfie32
+./selfie -c selfie.c -m 1          # Make selfie compile and run itself
+./selfie -c selfie.c -o selfie.m   # Generate the RISCV32 selfie ELF executable
+spike pk selfie.m                  # Run selfie using the ISA simulator
 
 # Selfie [![Build Status](https://travis-ci.org/cksystemsteaching/selfie.svg?branch=master)](https://travis-ci.org/cksystemsteaching/selfie)
 

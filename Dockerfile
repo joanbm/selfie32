@@ -1,5 +1,5 @@
 # import image where spike is already installed
-FROM riscv32-tools
+FROM joanbm/riscv32-tools
 
 # install git
 RUN apt-get update && apt-get install -y \
