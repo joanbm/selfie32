@@ -6,6 +6,8 @@ os:
 compiler:
 - clang
 - gcc
+before_script:
+  - sudo apt-get install -y gcc-multilib
 script: travis_wait 60 make all
 stages:
   - test
