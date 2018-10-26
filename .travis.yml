@@ -7,7 +7,7 @@ compiler:
 - clang
 - gcc
 before_script:
-  - sudo apt-get install -y gcc-multilib
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install -y gcc-multilib; fi
 script: travis_wait 60 make all
 stages:
   - test
