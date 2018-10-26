@@ -17,10 +17,11 @@ Selfie32 is a port of the [Selfie](https://github.com/cksystemsteaching/selfie) 
 * Successful Execution of selfie on the Spike RISCV32 emulator
 * Adapting the examples from `./manuscript/code`
 * Automated CI builds (Travis CI)
+* Passing the automated test suite
 
 ## What doesn't work or isn't tested (TODO)
 
-* Various options such as monster, mibster, mobster, etc.: Not tested
+* Various options such as monster, mibster, mobster, etc.: Not tested thoroughly, but the tests pass, and the code is adapted, so it should work
 
 ## What will not be done, unless it is contributed (WONTFIX)
 
@@ -31,13 +32,14 @@ Selfie32 is a port of the [Selfie](https://github.com/cksystemsteaching/selfie) 
 
 Since your compiler may not have everything required for Selfie32 (e.g. a 32-bit compiler toolchain), or everything you might want for testing (e.g. Spike ISA simulator) I recommend using the Docker container.
 
-``
+```
 docker build . -t selfie32         # Build the container with the 32-bit compiler and RISCV32 toolset
 docker run -it selfie32            # Launch an interactive session in the container
 make clean && make                 # (Re-)Compile selfie32
 ./selfie -c selfie.c -m 1          # Make selfie compile and run itself
 ./selfie -c selfie.c -o selfie.m   # Generate the RISCV32 selfie ELF executable
 spike pk selfie.m                  # Run selfie using the ISA simulator
+```
 
 ---
 
