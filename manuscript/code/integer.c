@@ -2,16 +2,16 @@
 
 // libcstar procedures for printing
 void init_library();
-void print(uint64_t* s);
-void print_character(uint64_t c);
-void print_string(uint64_t* s);
-void print_integer(uint64_t n);
-void print_hexadecimal(uint64_t n, uint64_t a);
-void print_octal(uint64_t n, uint64_t a);
-void print_binary(uint64_t n, uint64_t a);
+void print(uint32_t* s);
+void print_character(uint32_t c);
+void print_string(uint32_t* s);
+void print_integer(uint32_t n);
+void print_hexadecimal(uint32_t n, uint32_t a);
+void print_octal(uint32_t n, uint32_t a);
+void print_binary(uint32_t n, uint32_t a);
 void println();
 
-uint64_t main() {
+uint32_t main() {
   // initialize selfie's libcstar library
   init_library();
 

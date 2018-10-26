@@ -1,6 +1,6 @@
-uint64_t x;       // this is a global variable declaration
+uint32_t x;       // this is a global variable declaration
 
-uint64_t main() { // this is a global procedure declaration
+uint32_t main() { // this is a global procedure declaration
   x = 0;          // this is an assignment statement
 
   x = x + 1;      // this is an assignment statement

@@ -2,19 +2,19 @@
 
 // libcstar procedures for printing
 void init_library();
-void print(uint64_t* s);
-void print_integer(uint64_t n);
-void print_binary(uint64_t n, uint64_t a);
+void print(uint32_t* s);
+void print_integer(uint32_t n);
+void print_binary(uint32_t n, uint32_t a);
 void println();
 
 // libcstar procedures for left and right shifting
-uint64_t left_shift(uint64_t n, uint64_t b);
-uint64_t right_shift(uint64_t n, uint64_t b);
+uint32_t left_shift(uint32_t n, uint32_t b);
+uint32_t right_shift(uint32_t n, uint32_t b);
 
-uint64_t main() {
-  uint64_t i;
-  uint64_t j;
-  uint64_t u;
+uint32_t main() {
+  uint32_t i;
+  uint32_t j;
+  uint32_t u;
 
   // initialize selfie's libcstar library
   init_library();
@@ -28,7 +28,7 @@ uint64_t main() {
   // repeat until i is equal to 0
   while (i != 0) {
     // print i in binary
-    print_binary(i, 64);
+    print_binary(i, 32);
     print(" in binary = ");
     print_integer(i);
     print(" in decimal");
@@ -47,7 +47,7 @@ uint64_t main() {
   }
 
   // print u in binary
-  print_binary(u, 64);
+  print_binary(u, 32);
   print(" in binary = ");
   print_integer(u);
   print(" in decimal");
@@ -59,7 +59,7 @@ uint64_t main() {
   // repeat until i is equal to 0
   while (i != 0) {
     // print i in binary
-    print_binary(i, 64);
+    print_binary(i, 32);
     print(" in binary = ");
     print_integer(i);
     print(" in decimal");

@@ -1,7 +1,7 @@
-uint64_t x;
-uint64_t y;
+uint32_t x;
+uint32_t y;
 
-uint64_t main() {
+uint32_t main() {
   x = 1;
   y = 0;
 

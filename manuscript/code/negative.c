@@ -2,19 +2,19 @@
 
 // libcstar procedures for printing
 void init_library();
-void print(uint64_t* s);
-void print_integer(uint64_t n);
-void print_hexadecimal(uint64_t n, uint64_t a);
-void print_octal(uint64_t n, uint64_t a);
-void print_binary(uint64_t n, uint64_t a);
+void print(uint32_t* s);
+void print_integer(uint32_t n);
+void print_hexadecimal(uint32_t n, uint32_t a);
+void print_octal(uint32_t n, uint32_t a);
+void print_binary(uint32_t n, uint32_t a);
 void println();
 
-uint64_t UINT64_MAX;
+uint32_t UINT32_MAX;
 
-uint64_t INT64_MAX;
-uint64_t INT64_MIN;
+uint32_t INT32_MAX;
+uint32_t INT32_MIN;
 
-uint64_t main() {
+uint32_t main() {
   // initialize selfie's libcstar library
   init_library();
 
@@ -38,63 +38,63 @@ uint64_t main() {
   print_binary(-85, 0);
   println();
 
-  // print UINT64_MAX in decimal
-  print("UINT64_MAX in decimal:     ");
-  print_integer(UINT64_MAX);
+  // print UINT32_MAX in decimal
+  print("UINT32_MAX in decimal:     ");
+  print_integer(UINT32_MAX);
   println();
 
-  // print UINT64_MAX in hexadecimal
-  print("UINT64_MAX in hexadecimal: ");
-  print_hexadecimal(UINT64_MAX, 0);
+  // print UINT32_MAX in hexadecimal
+  print("UINT32_MAX in hexadecimal: ");
+  print_hexadecimal(UINT32_MAX, 0);
   println();
 
-  // print UINT64_MAX in octal
-  print("UINT64_MAX in octal:       ");
-  print_octal(UINT64_MAX, 0);
+  // print UINT32_MAX in octal
+  print("UINT32_MAX in octal:       ");
+  print_octal(UINT32_MAX, 0);
   println();
 
-  // print UINT64_MAX in binary
-  print("UINT64_MAX in binary:      ");
-  print_binary(UINT64_MAX, 64);
+  // print UINT32_MAX in binary
+  print("UINT32_MAX in binary:      ");
+  print_binary(UINT32_MAX, 32);
   println();
 
-  // print INT64_MAX in decimal
-  print(" INT64_MAX in decimal:     ");
-  print_integer(INT64_MAX);
+  // print INT32_MAX in decimal
+  print(" INT32_MAX in decimal:     ");
+  print_integer(INT32_MAX);
   println();
 
-  // print INT64_MAX in hexadecimal
-  print(" INT64_MAX in hexadecimal: ");
-  print_hexadecimal(INT64_MAX, 0);
+  // print INT32_MAX in hexadecimal
+  print(" INT32_MAX in hexadecimal: ");
+  print_hexadecimal(INT32_MAX, 0);
   println();
 
-  // print INT64_MAX in octal
-  print(" INT64_MAX in octal:       ");
-  print_octal(INT64_MAX, 0);
+  // print INT32_MAX in octal
+  print(" INT32_MAX in octal:       ");
+  print_octal(INT32_MAX, 0);
   println();
 
-  // print INT64_MAX in binary
-  print(" INT64_MAX in binary:      ");
-  print_binary(INT64_MAX, 64);
+  // print INT32_MAX in binary
+  print(" INT32_MAX in binary:      ");
+  print_binary(INT32_MAX, 32);
   println();
 
-  // print INT64_MIN in decimal
-  print(" INT64_MIN in decimal:     ");
-  print_integer(INT64_MIN);
+  // print INT32_MIN in decimal
+  print(" INT32_MIN in decimal:     ");
+  print_integer(INT32_MIN);
   println();
 
-  // print INT64_MIN in hexadecimal
-  print(" INT64_MIN in hexadecimal: ");
-  print_hexadecimal(INT64_MIN, 0);
+  // print INT32_MIN in hexadecimal
+  print(" INT32_MIN in hexadecimal: ");
+  print_hexadecimal(INT32_MIN, 0);
   println();
 
-  // print INT64_MIN in octal
-  print(" INT64_MIN in octal:       ");
-  print_octal(INT64_MIN, 0);
+  // print INT32_MIN in octal
+  print(" INT32_MIN in octal:       ");
+  print_octal(INT32_MIN, 0);
   println();
 
-  // print INT64_MIN in binary
-  print(" INT64_MIN in binary:      ");
-  print_binary(INT64_MIN, 64);
+  // print INT32_MIN in binary
+  print(" INT32_MIN in binary:      ");
+  print_binary(INT32_MIN, 32);
   println();
 }

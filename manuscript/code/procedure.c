@@ -1,11 +1,11 @@
-uint64_t x;
+uint32_t x;
 
 void p() {
   while (x > 0)
     x = x - 1;
 }
 
-uint64_t main() {
+uint32_t main() {
   x = 0;
 
   x = x + 1;
