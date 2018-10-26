@@ -1,4 +1,4 @@
-# Selfie32
+# Selfie32 [![Build Status](https://travis-ci.org/joanbm/selfie32.svg?branch=master)](https://travis-ci.org/joanbm/selfie32)
 
 Selfie32 is a port of the [Selfie](https://github.com/cksystemsteaching/selfie) project to 32-bit RISC.
 
@@ -15,12 +15,12 @@ Selfie32 is a port of the [Selfie](https://github.com/cksystemsteaching/selfie) 
 * Adapt Dockerfiles for 32-bit environment
 * Build & publish pre-built image of the RISCV32 simulator to Docker Hub
 * Successful Execution of selfie on the Spike RISCV32 emulator
+* Adapting the examples from `./manuscript/code`
+* Automated CI builds (Travis CI)
 
 ## What doesn't work or isn't tested (TODO)
 
 * Various options such as monster, mibster, mobster, etc.: Not tested
-* Automated builds (.travis.yml): Not done
-* Adapting the examples from `./manuscript/code`: Not done
 
 ## What will not be done, unless it is contributed (WONTFIX)
 
