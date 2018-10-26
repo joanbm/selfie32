@@ -109,7 +109,9 @@ uint32_t right_shift(uint32_t n, uint32_t b);
 
 uint32_t get_bits(uint32_t n, uint32_t i, uint32_t b);
 
-uint32_t abs(uint32_t n);
+// 32-bit port note: Renamed to avoid a conflict with C stdlib's abs(),
+// which makes native (GCC) and emulated (mipster) version behave differently
+uint32_t selfie_abs(uint32_t n);
 
 uint32_t signed_less_than(uint32_t a, uint32_t b);
 uint32_t signed_division(uint32_t a, uint32_t b);
@@ -1697,7 +1699,7 @@ uint32_t get_bits(uint32_t n, uint32_t i, uint32_t b) {
     return right_shift(left_shift(n, CPUBITWIDTH - (i + b)), CPUBITWIDTH - b);
 }
 
-uint32_t abs(uint32_t n) {
+uint32_t selfie_abs(uint32_t n) {
   if (signed_less_than(n, 0))
     return -n;
   else
@@ -1719,18 +1721,18 @@ uint32_t signed_division(uint32_t a, uint32_t b) {
     if (b == INT32_MIN)
       return 1;
     else if (signed_less_than(b, 0))
-      return INT32_MIN / abs(b);
+      return INT32_MIN / selfie_abs(b);
     else
       return -(INT32_MIN / b);
   else if (b == INT32_MIN)
     return 0;
   else if (signed_less_than(a, 0))
     if (signed_less_than(b, 0))
-      return abs(a) / abs(b);
+      return selfie_abs(a) / selfie_abs(b);
     else
-      return -(abs(a) / b);
+      return -(selfie_abs(a) / b);
   else if (signed_less_than(b, 0))
-    return -(a / abs(b));
+    return -(a / selfie_abs(b));
   else
     return a / b;
 }
