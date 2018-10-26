@@ -1,7 +1,7 @@
 uint32_t main() {
   uint32_t* x;
 
-  x = malloc(16);
+  x = malloc(8);
 
   *x = 0;
 
