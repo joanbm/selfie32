@@ -39,6 +39,12 @@ make clean && make                 # (Re-)Compile selfie32
 ./selfie -c selfie.c -o selfie.m   # Generate the RISCV32 selfie ELF executable
 spike pk selfie.m                  # Run selfie using the ISA simulator
 
+---
+
+(Selfie's original README follows...)
+
+---
+
 # Selfie [![Build Status](https://travis-ci.org/cksystemsteaching/selfie.svg?branch=master)](https://travis-ci.org/cksystemsteaching/selfie)
 
 Selfie is a project of the [Computational Systems Group](http://www.cs.uni-salzburg.at/~ck) at the Department of Computer Sciences of the University of Salzburg in Austria.
