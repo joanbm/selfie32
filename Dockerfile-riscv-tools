@@ -6,9 +6,12 @@ ENV TOP /opt
 ENV RISCV $TOP/riscv
 ENV PATH $PATH:$RISCV/bin
 
+# use multiple cores to speed up compilation
+ENV MAKEFLAGS -j4
+
 WORKDIR $TOP
 
-# install tools to build RISC-V gnu toolchain, spike and pk
+# install tools to build RISC-V gnu toolchain, spike, pk and qemu
 RUN apt-get update && apt-get install -y \
   autoconf \
   automake \
@@ -33,22 +36,34 @@ RUN apt-get update && apt-get install -y \
   pkg-config \
   libexpat-dev \
   git \
-  gcc
+  gcc \
+  python \
+  libglib2.0-dev
 
 # get sources from HEAD
+# FIXME: This clones not only the required code for the build, but also the entire history,
+# so it requires a lot of bandwidth, resources and time.
+# it would be better to do something like a shallow clone (like git's --depth 1),
+# but unfortunately, as of 20190117, there isn't any solid way to do this
 RUN git clone https://github.com/riscv/riscv-tools.git \
   && cd riscv-tools \
   && git submodule update --init --recursive
 
-# build everything with gcc
+# build most of the toolkit with gcc, including spike and pk
 RUN mkdir -p $RISCV \
   && cd riscv-tools \
   && CC=gcc CXX=g++ ./build.sh
 
+# additionally, build qemu
+RUN cd riscv-tools/riscv-gnu-toolchain && \
+	./configure --prefix=$RISCV && \
+	make build-qemu
+
 # test the RISC-V gnu toolchain
 RUN echo '#include <stdio.h>\n int main(void) { printf("Hello world!\\n"); return 0; }' > hello.c \
   && riscv64-unknown-elf-gcc -o hello hello.c \
-  && spike pk hello
+  && spike pk hello \
+  && qemu-riscv64 hello
 
 # remove RISC-V gnu toolchain to shrink image size
  RUN rm -rf \
@@ -73,7 +88,8 @@ RUN apt-get update && apt-get install -y \
     device-tree-compiler \
     build-essential \
     gcc \
+    libglib2.0-dev \
   && rm -rf /var/lib/apt/lists/*
 
-# copy spike and pk from builder image
+# copy spike, pk and qemu from builder image
 COPY --from=builder $RISCV/ $RISCV/

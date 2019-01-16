@@ -6,7 +6,7 @@ selfie: selfie.c
 	$(CC) $(CFLAGS) $< -o $@
 
 # Consider these targets as targets, not files
-.PHONY : compile quine escape debug replay os vm min mob sat spike riscv-tools all clean
+.PHONY : compile quine escape debug replay os vm min mob sat spike qemu riscv-tools all clean
 
 # Self-compile
 compile: selfie
@@ -65,6 +65,14 @@ spike: selfie
 	spike pk selfie.m -c selfie.c -o selfie7.m -s selfie7.s -m 1
 	diff -q selfie.m selfie7.m
 	diff -q selfie.s selfie7.s
+
+# Run selfie on qemu usermode emulation
+qemu: selfie
+	./selfie -c selfie.c -o selfie.m -s selfie.s
+	chmod +x selfie.m
+	qemu-riscv64 selfie.m -c selfie.c -o selfie8.m -s selfie8.s -m 1
+	diff -q selfie.m selfie8.m
+	diff -q selfie.s selfie8.s
 
 # Build and update riscv-tools Docker image
 riscv-tools:

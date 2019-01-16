@@ -1,5 +1,5 @@
-# import image where spike is already installed
-FROM cksystemsteaching/riscv-tools
+# import image where spike, pk and qemu is already installed
+FROM joanbm/selfie-riscv64-tools-with-qemu
 
 # install git
 RUN apt-get update && apt-get install -y \
