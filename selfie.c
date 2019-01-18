@@ -1583,6 +1583,8 @@ uint32_t EXITCODE_SYMBOLICEXECUTIONERROR = 12;
 uint32_t EXITCODE_OUTOFTRACEMEMORY       = 13;
 uint32_t EXITCODE_UNCAUGHTEXCEPTION      = 14;
 
+uint32_t SYSCALL_BITWIDTH = 32; // integer bit width for system calls
+
 uint32_t MIPSTER = 1;
 uint32_t DIPSTER = 2;
 uint32_t RIPSTER = 3;
@@ -5287,8 +5289,6 @@ uint32_t load_instruction(uint32_t baddr) {
 }
 
 void store_instruction(uint32_t baddr, uint32_t instruction) {
-  uint32_t temp;
-
   if (baddr >= MAX_CODE_LENGTH) {
     syntax_error_message((uint32_t*) "maximum code length exceeded");
 
@@ -6095,13 +6095,13 @@ void implement_write(uint32_t* context) {
 void emit_open() {
   create_symbol_table_entry(LIBRARY_TABLE, (uint32_t*) "open", 0, PROCEDURE, UINT32_T, 0, binary_length);
 
-  emit_ld(REG_A3, REG_SP, 0); // mode
+  emit_lw(REG_A3, REG_SP, 0); // mode
   emit_addi(REG_SP, REG_SP, REGISTERSIZE);
 
-  emit_ld(REG_A2, REG_SP, 0); // flags
+  emit_lw(REG_A2, REG_SP, 0); // flags
   emit_addi(REG_SP, REG_SP, REGISTERSIZE);
 
-  emit_ld(REG_A1, REG_SP, 0); // filename
+  emit_lw(REG_A1, REG_SP, 0); // filename
   emit_addi(REG_SP, REG_SP, REGISTERSIZE);
 
   // DIRFD_AT_FDCWD makes sure that openat behaves like open
