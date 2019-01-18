@@ -1583,8 +1583,6 @@ uint32_t EXITCODE_SYMBOLICEXECUTIONERROR = 12;
 uint32_t EXITCODE_OUTOFTRACEMEMORY       = 13;
 uint32_t EXITCODE_UNCAUGHTEXCEPTION      = 14;
 
-uint32_t SYSCALL_BITWIDTH = 32; // integer bit width for system calls
-
 uint32_t MIPSTER = 1;
 uint32_t DIPSTER = 2;
 uint32_t RIPSTER = 3;
@@ -5731,7 +5729,7 @@ void selfie_load() {
     if (validate_elf_header(ELF_header)) {
       if (binary_length <= MAX_BINARY_LENGTH) {
         // now read binary including global variables and strings
-        number_of_read_bytes = sign_extend(read(fd, binary, binary_length), SYSCALL_BITWIDTH);
+        number_of_read_bytes = read(fd, binary, binary_length);
 
         if (signed_less_than(0, number_of_read_bytes)) {
           // check if we are really at EOF
@@ -8295,7 +8293,7 @@ void decode_execute() {
 
       return;
     }
-  } else if (opcode == OP_OP) { // coucreate_symbol_table_entry be ADD, SUB, MUL, DIVU, REMU, SLTU
+  } else if (opcode == OP_OP) { // could be ADD, SUB, MUL, DIVU, REMU, SLTU
     decode_r_format();
 
     if (funct3 == F3_ADD) { // = F3_SUB = F3_MUL
