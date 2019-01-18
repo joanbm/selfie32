@@ -5540,7 +5540,7 @@ uint32_t* create_elf_header(uint32_t binary_length, uint32_t code_length) {
 
   // RISC-U ELF32 program header table:
   *(header + 13) = 1;                             // type of segment is LOAD
-  *(header + 14) = ELF_HEADER_LEN + SIZEOFUINT32; // segment offset in file (must be page-aligned)
+  *(header + 14) = ELF_HEADER_LEN;                // segment offset in file (must be page-aligned)
   *(header + 15) = ELF_ENTRY_POINT;               // virtual address in memory
   *(header + 16) = 0;                             // physical address (reserved)
   *(header + 17) = binary_length;                 // size of segment in file
