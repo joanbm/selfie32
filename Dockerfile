@@ -10,7 +10,7 @@ WORKDIR $TOP
 
 # install tools to build spike and pk
 RUN apt-get update \
-  && apt-get install --no-install-recommends -y make gcc g++ libc6-dev gcc-riscv64-linux-gnu libc6-dev-riscv64-cross device-tree-compiler git \
+  && apt-get install --no-install-recommends -y make gcc g++ libc6-dev gcc-riscv64-linux-gnu libc6-dev-riscv64-cross device-tree-compiler git ca-certificates \
   && rm -rf /var/lib/apt/lists/*
 
 # get sources from HEAD
