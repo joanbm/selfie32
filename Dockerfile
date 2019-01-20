@@ -51,8 +51,8 @@ ENV PATH $PATH:$RISCV/bin
 
 WORKDIR $TOP
 
-RUN apk update \
-  && apk add make gcc libc6-compat musl-dev dtc qemu-riscv64
+RUN apk update && apk add make pcc binutils libgcc libstdc++ libc6-compat musl-dev dtc qemu-riscv64
+ENV CC pcc
 
 # copy spike and pk from builder image
 COPY --from=spikepkbuilder $RISCV/ $RISCV/
