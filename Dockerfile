@@ -55,8 +55,7 @@ RUN apk update \
   && apk add make gcc libc6-compat musl-dev dtc qemu-riscv64
 
 # copy spike and pk from builder image
-#COPY --from=spikepkbuilder $RISCV/ $RISCV/
-COPY --from=joanbm/selfie-with-spikepk-qemu-superfast-dockerfile $RISCV/ $RISCV/
+COPY --from=spikepkbuilder $RISCV/ $RISCV/
 
 # add selfie sources to the image
 COPY . /opt/selfie/
