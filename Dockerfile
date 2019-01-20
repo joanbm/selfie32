@@ -31,7 +31,8 @@ ENV MAKEFLAGS -j4
 
 # by default, riscv-tools uses the riscv64-unknown-elf, but Ubuntu's packages are build as riscv64-linux-gnu.
 # ATM, this doesn't seem entirely configurable from riscv-tools. so just mass replace all ocurrences to fix it
-RUN find riscv-tools -type f -print0 | xargs -0 sed -i 's/riscv64-unknown-elf/riscv64-linux-gnu/g'
+RUN find riscv-tools -type f -print0 | xargs -0 sed -i 's/riscv64-unknown-elf/riscv64-linux-gnu/g' \\
+  && find riscv-tools -type f -print0 | xargs -0 sed -i 's/define USE_UCONTEXT/define USE_UCONTEXT_DUMMY/g'
 
 # build spike and the proxy kernel
 RUN cd riscv-tools && ./build-spike-pk.sh
