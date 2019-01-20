@@ -42,7 +42,7 @@ RUN cd riscv-tools && ./build-spike-pk.sh
 #  && riscv64-linux-gnu-gcc -o hello hello.c \
 #  && spike pk hello \
 
-FROM ubuntu:18.10 AS builder
+FROM alpine:3.8
 
 # specify work directory and RISC-V install directory
 ENV TOP /opt
@@ -51,16 +51,12 @@ ENV PATH $PATH:$RISCV/bin
 
 WORKDIR $TOP
 
-# install make/gcc (to build selfie), device-tree-compiler (dep. of spike) and qemu
-RUN apt-get update \
-  && apt-get install -y --no-install-recommends make gcc libc6-dev qemu-user device-tree-compiler \
-  && cp /usr/bin/qemu-riscv64 /usr/bin/qemu-riscv64-tmp \
-  && apt-get remove --purge -y qemu-user \
-  && mv /usr/bin/qemu-riscv64-tmp /usr/bin/qemu-riscv64 \
-  && rm -rf /var/lib/apt/lists/*
+RUN apk update \
+  && apk add make gcc libc6-compat musl-dev dtc qemu-riscv64
 
 # copy spike and pk from builder image
-COPY --from=spikepkbuilder $RISCV/ $RISCV/
+#COPY --from=spikepkbuilder $RISCV/ $RISCV/
+COPY --from=joanbm/selfie-with-spikepk-qemu-superfast-dockerfile $RISCV/ $RISCV/
 
 # add selfie sources to the image
 COPY . /opt/selfie/
@@ -72,4 +68,4 @@ WORKDIR /opt/selfie
 RUN make selfie
 
 # default command
-CMD /bin/bash
+CMD /bin/ash
