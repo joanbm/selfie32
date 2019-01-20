@@ -9,8 +9,8 @@ ENV PATH $PATH:$RISCV/bin
 WORKDIR $TOP
 
 # install tools to build spike and pk
-RUN apt-get update && apt-get install -y \
-  make gcc g++ gcc-riscv64-linux-gnu device-tree-compiler git \
+RUN apt-get update \
+  && apt-get install --no-install-recommends -y make gcc g++ libc6-dev gcc-riscv64-linux-gnu libc6-dev-riscv64-cross device-tree-compiler git \
   && rm -rf /var/lib/apt/lists/*
 
 # get sources from HEAD
@@ -51,8 +51,11 @@ ENV PATH $PATH:$RISCV/bin
 WORKDIR $TOP
 
 # install make/gcc (to build selfie), device-tree-compiler (dep. of spike) and qemu
-RUN apt-get update && apt-get install -y \
-  make gcc qemu-user device-tree-compiler \
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends make gcc libc6-dev qemu-user device-tree-compiler \
+  && cp /usr/bin/qemu-riscv64 /usr/bin/qemu-riscv64-tmp \
+  && apt-get remove --purge -y qemu-user \
+  && mv /usr/bin/qemu-riscv64-tmp /usr/bin/qemu-riscv64 \
   && rm -rf /var/lib/apt/lists/*
 
 # copy spike and pk from builder image
