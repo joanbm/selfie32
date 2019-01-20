@@ -2639,7 +2639,7 @@ void get_symbol() {
       // while looking for whitespace and "//"
       if (is_character_letter()) {
         // accommodate identifier and null for termination
-        identifier = smalloc(MAX_IDENTIFIER_LENGTH + 1);
+        identifier = zalloc(MAX_IDENTIFIER_LENGTH + 1);
 
         i = 0;
 
