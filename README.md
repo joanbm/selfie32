@@ -23,11 +23,7 @@ Selfie is a self-contained 64-bit, 10-KLOC C implementation of:
 5. a simple SAT solver that reads CNF DIMACS files, and
 6. a tiny C* library called libcstar utilized by selfie.
 
-<<<<<<< HEAD
-Selfie is implemented in a single (!) file and kept minimal for simplicity. There is also a simple in-memory linker, a RISC-U disassembler, a profiler, and a debugger with replay as well as minimal operating system support built into the emulator. Selfie generates ELF binaries that are compatible with the official [RISC-V](https://riscv.org) toolchain, in particular the [spike emulator](https://github.com/riscv/riscv-isa-sim) and the [pk kernel](https://github.com/riscv/riscv-pk), as well as with [qemu usermode emulation](https://github.com/riscv/riscv-qemu).
-=======
 Selfie is implemented in a single (!) file and kept minimal for simplicity. There is also a simple in-memory linker, a RISC-U disassembler, a profiler, and a debugger with replay as well as minimal operating system support built into the emulator. Selfie generates ELF binaries that run on [QEMU](https://www.qemu.org) and are compatible with the official [RISC-V](https://riscv.org) toolchain, in particular the [spike emulator](https://github.com/riscv/riscv-isa-sim) and the [pk kernel](https://github.com/riscv/riscv-pk).
->>>>>>> ff15d7ce35aedf33b5fff909cb6f6554d167a057
 
 For further information and support please refer to [http://selfie.cs.uni-salzburg.at](http://selfie.cs.uni-salzburg.at)
 
